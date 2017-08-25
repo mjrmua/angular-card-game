@@ -1,0 +1,15 @@
+<md-card>
+ <md-card-content>
+<img md-card-iamge [src]="card.faceImage"/>
+ </md-card-content>
+<md-card-footer>
+  <button md-button (click)="flip()">Flip</button>
+  <md-menu #appMenu="mdMenu">
+    <button md-menu-item> Hand </button>
+    <button md-menu-item> Discards </button>
+  </md-menu>
+  <button md-icon-button [mdMenuTriggerFor]="appMenu">
+    Move to...
+  </button>
+</md-card-footer>
+</md-card>

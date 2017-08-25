@@ -1,0 +1,13 @@
+<nav>
+<ul>
+    <li *ngFor="let game of games" (click)="joinGame(game)">
+    <span class="name">
+      {{ game.name }}
+    </span>
+    <span class="actions">
+    <button md-icon-button (click)="delete(game)"><md-icon>delete forever</md-icon></button>
+    </span>
+</li>
+</ul>
+</nav>
+<button md-button (click)="newGame()">New</button>

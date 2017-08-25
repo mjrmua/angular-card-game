@@ -1,0 +1,11 @@
+<form>
+<md-input-container>
+    <input mdInput placeholder="Name" required name="gameName" [(ngModel)]="name"/>
+</md-input-container>
+<md-input-container>
+    <textarea mdInput placeholder="Start state JSON" name="json" [(ngModel)]="defaultStateJson">
+    </textarea>
+</md-input-container>
+<button md-button md-dialog-close (click)="create()">OK</button>
+<button md-button md-dialog-close >Cancel</button>
+</form>

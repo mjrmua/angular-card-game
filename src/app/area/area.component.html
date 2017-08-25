@@ -1,0 +1,19 @@
+<md-menu #areamenu="mdMenu">
+    <button md-menu-item (click)="fireShuffleEvent()"> Shuffle </button>
+  </md-menu>
+
+<span class="title" >{{area.name}} 
+  <button md-icon-button (click)="openAreaMenu()" [mdMenuTriggerFor]="areamenu"><md-icon>arrow_drop_down</md-icon></button>
+  </span>
+<div class='area' 
+[attr.data-area-id]="area.id"
+[dragula]='"nested-bag"' 
+>
+  <div *ngFor='let card of area.cards | visibleCards: area.style; let i = index' class="card" 
+  [attr.data-card-id]="card.id"
+  [attr.data-card-index]="i"
+  [ngStyle]="card | cardStyle: i: area"
+  [style.background-image]="'url('+(card.faceUp?card.faceImage:card.backImage)+')'"
+  (click)="fireCardClick(card)"
+  ></div>
+</div>

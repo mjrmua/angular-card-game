@@ -1,0 +1,7 @@
+<md-toolbar color="primary">
+  <span>Logged in as: {{ ( auth.user | async )?.displayName }}</span>
+  <span class="fill-remaining-space"></span>
+  <span>
+  <button *ngIf="auth.isLoggedIn" (click)="logout()">Logout</button></span>
+</md-toolbar>
+<router-outlet></router-outlet>

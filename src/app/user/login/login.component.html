@@ -1,0 +1,27 @@
+<md-card>
+  <md-card-title>
+    <md-toolbar color="primary">Login</md-toolbar>
+  </md-card-title>
+  <md-card-content>
+      <form>
+    <md-menu #appMenu="mdMenu" >
+      <button md-icon-button *ngFor="let avatar of avatars" (click)="setAvatar(avatar)">
+        <app-avatar [avatar]="avatar"></app-avatar>
+      </button>
+    </md-menu>
+      <label for="name">Call me </label>
+      <button type="button" class = "avatar-button" md-mini-fab  [mdMenuTriggerFor]="appMenu"> 
+        <app-avatar [avatar]="user.avatar"></app-avatar>
+      </button>
+      <md-input-container>
+      <input mdInput text placeholder="Name" required name="name" id="name" 
+      [(ngModel)]="user.name"
+      #name="ngModel" />
+      </md-input-container>
+      <button md-button color="primary" [hidden]="!name.errors" (click)="login()">
+        Sign in with Google
+       </button>
+      </form>
+  </md-card-content>
+</md-card>
+

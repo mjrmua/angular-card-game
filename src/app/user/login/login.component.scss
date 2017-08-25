@@ -1,0 +1,31 @@
+form
+{
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+md-card {
+    margin: 50px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) 
+}
+
+.mat-menu-content
+{
+    display: flex;
+}
+
+.avatar-button
+{
+    border: 3px solid Lime;
+    margin: 10px;
+    width: 46px;
+    height: 46px;
+}

@@ -1,0 +1,14 @@
+<h2 md-dialog-title>Add Area</h2>
+<form name="form" #form="ngForm">
+<md-dialog-content>
+<md-input-container>
+    <input mdInput placeholder="Name" required name="gameName" [(ngModel)]="name" required/>
+</md-input-container>
+<md-select placeholder="Layout" required name="layout" [(ngModel)]="layout">
+   <md-option *ngFor="let layout of layouts" [value]="layout.value">{{ layout.name }}</md-option>
+</md-select>
+  <md-checkbox name="allSeats" [(ngModel)]="allSeats">Duplicate for all seats</md-checkbox>
+</md-dialog-content>
+<button md-button md-dialog-close (click)="create()" [disabled]="!form.valid">OK</button>
+<button md-button md-dialog-close >Cancel</button>
+</form>
