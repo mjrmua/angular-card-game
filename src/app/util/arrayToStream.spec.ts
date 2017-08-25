@@ -11,9 +11,40 @@ describe('ArrayToStream', () => {
      const source = new Subject<number[]>();
      const stream = arrayToStream(source);
      const output = [];
-     stream.subscribe(output.push);
+     stream.subscribe(v => output.push(v));
      source.next([1, 2, 3]);
      tick();
      expect(output).toEqual([1, 2, 3]);
+  }));
+
+  it('should replay previous entries', fakeAsync(() => {
+     const source = new Subject<number[]>();
+     const stream = arrayToStream(source);
+     const output = [];
+     source.next([1, 2, 3]);
+     stream.subscribe(v => output.push(v));
+     tick();
+     expect(output).toEqual([1, 2, 3]);
+  }));
+
+  it('should stream new elements added to the array', fakeAsync(() => {
+     const source = new Subject<number[]>();
+     const stream = arrayToStream(source);
+     const output = [];
+     stream.subscribe(v => output.push(v));
+     source.next([1, 2, 3]);
+     source.next([1, 2, 3, 4]);
+     tick();
+     expect(output).toEqual([1, 2, 3, 4]);
+  }));
+
+  it('should throw any error if you do a non-push modification', fakeAsync(() => {
+     const source = new Subject<number[]>();
+     const stream = arrayToStream(source);
+     const output = [];
+     stream.subscribe(v => output.push(v));
+     source.next([1, 2, 3]);
+     source.next([5]);
+     tick();
   }));
 });

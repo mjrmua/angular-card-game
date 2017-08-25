@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { MoveMessage } from './messages/MoveMessage';
+import { arrayToStream } from "../util/arrayToStream";
 
 @Injectable()
 export class MessageStoreService {
@@ -44,39 +45,18 @@ function messageFromJson(json: any): Message {
 }
 
 export class MessageStore {
-  readonly messageStream: ReplaySubject<Message>;
+  readonly messageStream: Observable<Message>;
   private dbList: FirebaseListObservable<Message[]>;
   private lastSeenKey: string;
   public latestMessage: Observable<Message>;
 
   constructor(private db: AngularFireDatabase, gameID: string) {
       this.dbList = this.db.list('/messageLog/' + gameID  );
-      this.messageStream = new ReplaySubject<Message>();
+      this.messageStream = arrayToStream(this.dbList);
       this.latestMessage = this.messageStream.map(v => v);
-      this.dbList.subscribe(this.loadNewMessages.bind(this));
   }
 
   public push(message: Message) {
     this.dbList.push(message);
-  }
-
-  private loadNewMessages(messages: Message[]) {
-    if (this.lastSeenKey === undefined) {
-      for (const message of messages) {
-        this.messageStream.next(messageFromJson(message));
-        this.lastSeenKey = message.$key;
-      }
-    } else {
-      let isNew = false;
-      for (const message of messages) {
-        if (isNew) {
-          this.lastSeenKey = message.$key;
-          this.messageStream.next(messageFromJson(message));
-        }
-        if (message.$key === this.lastSeenKey) {
-          isNew = true;
-        }
-      }
-    }
   }
 }

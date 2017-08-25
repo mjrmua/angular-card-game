@@ -1,4 +1,4 @@
-import { Message } from './messages/Message';
+import { Message, applyMessage } from './messages/Message';
 import { MessageStoreService, MessageStore } from './message-store.service';
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -41,8 +41,7 @@ export class GameService {
         .concat(
         messageStore.messageStream.scan(
             (state, message, index) => {
-                console.log('applying message ' + message.$key);
-                return message.apply(state.clone());
+                return applyMessage(state, message);
             },
             game.initialState
         ));

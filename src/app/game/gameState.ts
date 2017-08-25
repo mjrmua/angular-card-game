@@ -1,5 +1,6 @@
 import { Game } from './../game-list/game-list.service';
 import * as seedrandom from 'seedrandom';
+import * as R from 'ramda';
 import { prng } from 'seedrandom';
 
 
@@ -30,6 +31,31 @@ export enum AreaStyle {
 }
 
 export class Area {
+
+    static addCard = R.curry(function (card: Card, index: number, area: Area) {
+        if (index < 0) {
+            index = area.cards.length + 1 + index;
+        }
+
+        if (index > area.cards.length) {
+            throw new Error('Index out of range');
+        }
+        if (index === -1) {
+            return new Area(area.id, area.name, area.style, area.parentID, [...area.cards, card]);
+        }
+        return new Area(area.id, area.name, area.style, area.parentID,
+            [...area.cards.slice(0, index), card, ...area.cards.slice(index)]);
+    });
+
+    static removeCard= R.curry(function(card: Card, area: Area) {
+        const index = area.cards.indexOf(card);
+        return new Area(area.id, area.name, area.style, area.parentID,
+            [...area.cards.slice(0, index), ...area.cards.slice(index + 1)]);
+    });
+
+    static named(id: string) {
+        return new Area(id, id, AreaStyle.Horizontal, null, []);
+    }
     static fromJson(json: Area): Area {
         return new Area(json.id, json.name, json.style, json.parentID, (json.cards || []).map(Card.fromJson));
     }
@@ -41,20 +67,14 @@ export class Area {
                 readonly cards: Card[]) {
     }
 
-    addCard(card: Card, index: number) {
-        if (index === -1) {
-            this.cards.push(card);
-            return;
-        }
-        this.cards.splice(index, 0, card);
-    }
-    removeCard(card: Card) {
-        const index = this.cards.indexOf(card);
-        this.cards.splice(index, 1);
-    }
+
 
     findCard(id: string): Card {
-        return this.cards.find(v => v.id === id);
+        const card = this.cards.find(v => v.id === id);
+        if (card === undefined) {
+            throw new Error('Card ' + id + ' not found');
+        }
+        return card;
     }
     shuffle(rng: prng) {
         console.log(rng.quick());
@@ -71,6 +91,10 @@ export class Area {
 export class GameState {
     static fromJson(json: GameState): GameState {
         return new GameState(json.rngState, json.areas.map(Area.fromJson));
+    }
+
+    with(area: Area): GameState {
+        return new GameState(this.rngState, [...this.areas, area]);
     }
 
     constructor(public rngState: any, readonly areas: Area[]) { }
@@ -91,20 +115,27 @@ export class GameState {
                 }
         }
     }
-    updateArea(area: Area): GameState {
-        const oldArea = this.areas.find(v => v.id === area.id);
+    updateArea(areaID: string, change: (a: Area) => Area): GameState {
+        const oldArea = this.areas.find(v => v.id === areaID);
         const index = this.areas.indexOf(oldArea);
         const newAreas = [
             ...this.areas.slice(0, index),
-            area,
+            change(oldArea),
             ...this.areas.slice(index + 1)
         ];
         return new GameState(this.rngState, newAreas);
-
     }
 
     findArea(id: string): Area {
-        return this.areas.find(v => v.id === id);
+        const result = this.areas.find(v => v.id === id);
+        if (result === undefined) {
+             throw new Error('Area ' + id + ' not found');
+        }
+        return result;
+    }
+
+    cardsIn(id: string): string[] {
+        return this.findArea(id).cards.map(v => v.id);
     }
 
     clone(): GameState {

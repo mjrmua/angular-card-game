@@ -1,7 +1,7 @@
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
 
-export function arrayToStream<T>(observableArray: Observable<T[]>) {
+export function arrayToStream<T>(observableArray: Observable<T[]>): Observable<T> {
       const stream = new ReplaySubject<T>();
       let lastLength = 0;
       observableArray.subscribe(v => {

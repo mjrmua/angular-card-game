@@ -8,7 +8,6 @@
           {{ player }}
         </ng-template>
         <div class="table">
-
     <button md-icon-button (click)=addArea(player)>
     <md-icon>add</md-icon>
     </button>
@@ -16,7 +15,8 @@
       <app-area [area]="area" 
       (cardClick)="openCardView($event)"
       (shuffleArea)="shuffle($event)"
-      ></app-area>
+      >
+    </app-area>
     </div>
   </div>
       </md-tab>
@@ -25,7 +25,6 @@
 <div class='wrapper' *ngFor='let area of (state | async).commonAreas()'>
       <app-area [area]="area" (cardClick)="openCardView($event)"></app-area>
 </div>
-
   <h3>Messages:</h3>
   <app-message-log>
     This is the message log
