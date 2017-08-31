@@ -20,7 +20,8 @@ function move(state: GameState, message: MoveMessage): GameState {
                 .updateArea(message.destinationID, Area.addCard(card, message.destinationIndex));
 }
 
-function shuffle(state: GameState, message: ShuffleMessage): GameState {
+function shuffle(_state: GameState, message: ShuffleMessage): GameState {
+    const state = _state.clone();
     const rng = seedrandom('', { state: state.rngState });
     state.findArea(message.areaID).shuffle(rng);
     state.rngState = rng.state();
@@ -28,8 +29,7 @@ function shuffle(state: GameState, message: ShuffleMessage): GameState {
 }
 
 function flip(state: GameState, message: FlipMessage): GameState {
-    state.findCard(message.cardID).flip();
-    return state;
+    return state.flipCard(message.cardID);
 }
 
 function createArea(state: GameState, message: CreateAreaMessage): GameState {
@@ -41,8 +41,8 @@ export function applyMessage(_state: GameState, message: Message) {
     const state = _state.clone();
     switch (message.type) {
         case MessageType.Move: return move(state, message);
-        case MessageType.Shuffle: return shuffle(state, message);
         case MessageType.Flip: return flip(state, message);
         case MessageType.CreateArea: return createArea(state, message);
+        case MessageType.Shuffle: return shuffle(state, message);
     }
 }

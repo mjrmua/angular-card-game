@@ -5,6 +5,6 @@ export class FlipMessage {
     type: MessageType.Flip;
     $key: string;
     constructor(readonly cardID: string) {
+        this.type = MessageType.Flip;
     }
-
 }

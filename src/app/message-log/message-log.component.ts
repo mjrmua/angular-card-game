@@ -1,8 +1,9 @@
+import { GameService } from './../game/gameService';
 import { MoveMessage } from './../game/messages/MoveMessage';
 import { Message, MessageType } from './../game/messages/Message';
 import { ActivatedRoute } from '@angular/router';
 import { MessageStoreService } from './../game/message-store.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
@@ -11,19 +12,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   styleUrls: ['./message-log.component.scss']
 })
 export class MessageLogComponent implements OnInit {
-  public messages: Message[];
+  @Input() service: GameService;
 
-  constructor(private storeFactory: MessageStoreService, private route: ActivatedRoute) {
-    this.messages = [];
+  constructor() {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(
-      params => {
-        const id = params.get('id');
-        const store = this.storeFactory.loadMessageStore(id);
-        store.messageStream.subscribe(v => this.messages.splice(0, 0, v));
-      });
   }
 
   messageDescription(message: Message): string {

@@ -46,7 +46,7 @@ function messageFromJson(json: any): Message {
 
 export class MessageStore {
   readonly messageStream: Observable<Message>;
-  private dbList: FirebaseListObservable<Message[]>;
+  public dbList: FirebaseListObservable<Message[]>;
   private lastSeenKey: string;
   public latestMessage: Observable<Message>;
 

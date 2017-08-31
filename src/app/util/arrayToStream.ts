@@ -10,8 +10,8 @@ export function arrayToStream<T>(observableArray: Observable<T[]>): Observable<T
           }
           for (const element of v.slice(lastLength)) {
               stream.next(element);
+              lastLength++;
           }
-          lastLength = v.length;
       });
       return stream;
 }

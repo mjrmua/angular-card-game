@@ -1,3 +1,6 @@
+import { style } from '@angular/animations';
+import { CreateAreaMessage } from './messages/CreateAreaMessage';
+import { FlipMessage } from './messages/FlipMessage';
 import { EMPTY_STATE, Card, Area, AreaStyle } from './gameState';
 import { TestBed, async } from '@angular/core/testing';
 import { MoveMessage } from './messages/MoveMessage';
@@ -15,6 +18,63 @@ describe('GameState', () => {
   describe('Empty state', () => {
     it('should should have no areas', () => {
       expect(EMPTY_STATE.areas).toEqual([]);
+    });
+
+    describe('Area', () => {
+      it('should be able to remove cards', () => {
+        const card1 = new Card('1', '', '', true);
+        const card2 = new Card('2', '', '', true);
+        const area = new Area('', ',', AreaStyle.Fan, '', [
+          new Card('1', '', '', true),
+          new Card('2', '', '', true),
+        ]);
+
+        const newArea = Area.removeCard(card1, area);
+        expect(area.cards).toEqual([card2]);
+      });
+
+    });
+
+    describe('Card flip action', () => {
+      it('should throw an exception if the card is not found', () => {
+        const flip = new FlipMessage('card');
+        expect(() => applyMessage(EMPTY_STATE, flip)).toThrow(new Error('Card card not found'));
+      });
+
+       it('should flip a card', () => {
+        const flip = new FlipMessage('card');
+        const stateBefore = EMPTY_STATE.with(areaWithCards('source', ['card']));
+        expect(stateBefore.findCard('card').faceUp).toBe(true);
+        const stateAfter = applyMessage(stateBefore, flip);
+        expect(stateAfter.findCard('card').faceUp).toBe(false);
+      });
+
+       it('should flip a card', () => {
+        const flip = new FlipMessage('card1');
+        const stateBefore = EMPTY_STATE
+                        .with(areaWithCards('source', ['card']))
+                        .with(areaWithCards('dest', ['card1']));
+        const stateAfter = applyMessage(stateBefore, flip);
+        expect(stateAfter.findCard('card1').faceUp).toBe(false);
+      });
+    });
+
+    describe('Area with card', () => {
+      it('should find the correct area', () => {
+        const stateBefore = EMPTY_STATE
+                        .with(areaWithCards('source', ['card']))
+                        .with(areaWithCards('dest', ['card1']));
+        expect(stateBefore.areaWithCard('card1').id).toBe('dest');
+      });
+    });
+
+    describe('Add area action', () => {
+       it('should add the area', () => {
+        const newArea = new Area('area', 'area', null, '', []);
+        const createArea = new CreateAreaMessage(newArea);
+        expect(applyMessage(EMPTY_STATE, createArea).areas)
+          .toEqual([newArea]);
+      });
     });
 
     describe('Move action', () => {
@@ -62,8 +122,6 @@ describe('GameState', () => {
         expect(moveCardTo(0).cardsIn('dest')).toEqual(['card', '1', '2', '3']);
         expect(moveCardTo(1).cardsIn('dest')).toEqual(['1', 'card', '2', '3']);
         expect(moveCardTo(3).cardsIn('dest')).toEqual(['1', '2', '3', 'card']);
-
-        // Negative indexing
         expect(moveCardTo(-1).cardsIn('dest')).toEqual(['1', '2', '3', 'card']);
         expect(moveCardTo(-2).cardsIn('dest')).toEqual(['1', '2', 'card', '3']);
         expect(moveCardTo(-3).cardsIn('dest')).toEqual(['1', 'card', '2', '3']);
@@ -78,8 +136,6 @@ describe('GameState', () => {
         expect(moveCardTo(1).cardsIn('dest')).toEqual(['1', 'card', '2', '3']);
         expect(moveCardTo(2).cardsIn('dest')).toEqual(['1', '2', 'card', '3']);
         expect(moveCardTo(3).cardsIn('dest')).toEqual(['1', '2', '3', 'card']);
-
-        // Negative indexing
         expect(moveCardTo(-1).cardsIn('dest')).toEqual(['1', '2', '3', 'card']);
         expect(moveCardTo(-2).cardsIn('dest')).toEqual(['1', '2', 'card', '3']);
         expect(moveCardTo(-3).cardsIn('dest')).toEqual(['1', 'card', '2', '3']);

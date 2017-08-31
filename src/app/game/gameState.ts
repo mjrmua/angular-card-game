@@ -14,7 +14,7 @@ export class Card {
                 readonly backImage: string,
                 public faceUp: boolean = true
             ) {
-        this.faceUp = true;
+        this.faceUp = faceUp;
     }
 
     flip() {
@@ -22,7 +22,7 @@ export class Card {
     }
 
     clone(): Card {
-        return new Card(this.id, this.faceImage, this.backImage);
+        return new Card(this.id, this.faceImage, this.backImage, this.faceUp);
     }
 }
 
@@ -31,8 +31,17 @@ export enum AreaStyle {
 }
 
 export class Area {
+    static flipCard = R.curry(function (cardID: string, area: Area): Area {
+        const card = area.cards.filter(v => v.id === cardID)[0];
+        const index = area.cards.indexOf(card);
+        const flipped = new Card(card.id, card.faceImage, card.backImage, !card.faceUp);
+        return R.pipe(
+            Area.removeCard(card),
+            Area.addCard(flipped, index)
+        )(area);
+    });
 
-    static addCard = R.curry(function (card: Card, index: number, area: Area) {
+    static addCard = R.curry(function (card: Card, index: number, area: Area): Area {
         if (index < 0) {
             index = area.cards.length + 1 + index;
         }
@@ -47,7 +56,7 @@ export class Area {
             [...area.cards.slice(0, index), card, ...area.cards.slice(index)]);
     });
 
-    static removeCard= R.curry(function(card: Card, area: Area) {
+    static removeCard = R.curry(function (card: Card, area: Area): Area {
         const index = area.cards.indexOf(card);
         return new Area(area.id, area.name, area.style, area.parentID,
             [...area.cards.slice(0, index), ...area.cards.slice(index + 1)]);
@@ -67,7 +76,10 @@ export class Area {
                 readonly cards: Card[]) {
     }
 
-
+    hasCard(id: string): boolean  {
+        const card = this.cards.find(v => v.id === id);
+        return card !== undefined;
+    }
 
     findCard(id: string): Card {
         const card = this.cards.find(v => v.id === id);
@@ -97,6 +109,11 @@ export class GameState {
         return new GameState(this.rngState, [...this.areas, area]);
     }
 
+    flipCard(cardID: string): GameState {
+        const areaID = this.areaWithCard(cardID).id;
+        return this.updateArea(areaID, Area.flipCard(cardID));
+    }
+
     constructor(public rngState: any, readonly areas: Area[]) { }
 
     playerAreas(player: string): Area[] {
@@ -107,13 +124,22 @@ export class GameState {
         return this.areas.filter(v => !v.parentID);
     }
 
-    findCard(cardID: any): any {
+    areaWithCard(cardID: string): Area {
+        const area = this.areas.find(v => v.hasCard(cardID));
+        if (area === undefined) {
+            throw Error('Card ' + cardID + ' not found');
+        }
+        return area;
+    }
+
+    findCard(cardID: string): Card {
         for (const area of this.areas) {
             const card = area.findCard(cardID);
             if (card !== undefined) {
                 return card;
-                }
+            }
         }
+        throw Error('Card ' + cardID + ' not found');
     }
     updateArea(areaID: string, change: (a: Area) => Area): GameState {
         const oldArea = this.areas.find(v => v.id === areaID);

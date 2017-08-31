@@ -26,7 +26,7 @@
       <app-area [area]="area" (cardClick)="openCardView($event)"></app-area>
 </div>
   <h3>Messages:</h3>
-  <app-message-log>
+  <app-message-log [service]="service">
     This is the message log
   </app-message-log>
   <h3>GameState</h3>

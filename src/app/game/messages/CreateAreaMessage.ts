@@ -5,6 +5,7 @@ export class CreateAreaMessage {
     type: MessageType.CreateArea;
     $key: string;
     constructor(readonly area: Area) {
+        this.type = MessageType.CreateArea;
     }
 }
 

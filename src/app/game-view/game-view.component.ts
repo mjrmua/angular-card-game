@@ -26,7 +26,7 @@ export class GameViewComponent implements OnInit {
   id: string;
   public seats: string[] = ['Player 1', 'Player 2', 'Player 3'];
   public state: Observable<GameState>;
-  public messages: Message[] = [];
+  public service: GameService;
   private messageStore: MessageStore;
 
   constructor(private route: ActivatedRoute,
@@ -77,10 +77,11 @@ export class GameViewComponent implements OnInit {
    .then(map => this.id = map.get('id'))
    .then(id => {
       this.messageStore = this.MessageStoreService.loadMessageStore(id);
-      this.messageStore.messageStream.subscribe(v => this.messages.splice(0, 0, v));
       return this.gameServiceFactory.load(this.id);
     })
-   .then(service => { this.state = service.state; })
+   .then(service => {
+     this.service = service;
+     this.state = service.state; })
    .catch(log);
   }
 }

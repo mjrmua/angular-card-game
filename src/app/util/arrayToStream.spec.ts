@@ -47,4 +47,20 @@ describe('ArrayToStream', () => {
      source.next([5]);
      tick();
   }));
+
+  it('should send 1 event to scan per item', fakeAsync(() => {
+     const source = new Subject<number[]>();
+     const stream = arrayToStream(source);
+     let applyCount = 0;
+     const outputObservalble = stream.scan((acc, next, index) => {
+       applyCount++;
+       return [...acc, next];
+      }, []);
+     let output = [];
+     outputObservalble.subscribe(v => output = v);
+     source.next([1, 2, 3]);
+     tick();
+     expect(output).toEqual([1, 2, 3]);
+     expect(applyCount).toEqual(3);
+  }));
 });

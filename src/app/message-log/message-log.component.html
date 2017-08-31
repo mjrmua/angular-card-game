@@ -1,9 +1,10 @@
 <ul>
-<li *ngFor='let message of messages' class="message ng-animate">
+<li *ngFor='let message of (service.messages | async)' class="message ng-animate">
+  {{ message.index }}
   <button md-icon-button><md-icon mdTooltip="View this revision">visibility</md-icon></button>
   <button md-icon-button><md-icon mdTooltip="Undo">undo</md-icon></button>
-  <button md-icon-button><md-icon mdTooltip="Application failed">error</md-icon></button>
-  <button md-icon-button><md-icon mdTooltip="application ok">done</md-icon></button>
-  {{ messageDescription(message) }} {{message.$key}} 
+  <button *ngIf="!message.successful" md-icon-button><md-icon mdTooltip="{{message.errorMessage}}">error</md-icon></button>
+  <button *ngIf="message.successful" md-icon-button><md-icon mdTooltip="applied successfully">done</md-icon></button>
+  {{ messageDescription(message.message) }} {{message.message.$key}} 
 </li>
 </ul>
