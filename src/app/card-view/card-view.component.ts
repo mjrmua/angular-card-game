@@ -1,5 +1,5 @@
 import { FlipMessage } from './../game/messages/FlipMessage';
-import { MessageStore } from './../game/message-store.service';
+import { MessageStore } from './../game/message.service';
 import { Card } from './../game/gameState';
 import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
 import { MD_DIALOG_DATA, MdMenuTrigger } from '@angular/material';
@@ -31,5 +31,4 @@ export class CardViewComponent implements OnInit {
   openMenu() {
     this.trigger.openMenu();
   }
-
 }

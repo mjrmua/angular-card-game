@@ -16,46 +16,18 @@ describe('GameState', () => {
   }));
 
   describe('Empty state', () => {
-    it('should should have no areas', () => {
+    it('has no areas', () => {
       expect(EMPTY_STATE.areas).toEqual([]);
     });
+  });
 
     describe('Area', () => {
-      it('should be able to remove cards', () => {
+      it('can remove cards', () => {
         const card1 = new Card('1', '', '', true);
         const card2 = new Card('2', '', '', true);
-        const area = new Area('', ',', AreaStyle.Fan, '', [
-          new Card('1', '', '', true),
-          new Card('2', '', '', true),
-        ]);
-
+        const area = new Area('', ',', AreaStyle.Fan, '', [ card1, card2 ]);
         const newArea = Area.removeCard(card1, area);
-        expect(area.cards).toEqual([card2]);
-      });
-
-    });
-
-    describe('Card flip action', () => {
-      it('should throw an exception if the card is not found', () => {
-        const flip = new FlipMessage('card');
-        expect(() => applyMessage(EMPTY_STATE, flip)).toThrow(new Error('Card card not found'));
-      });
-
-       it('should flip a card', () => {
-        const flip = new FlipMessage('card');
-        const stateBefore = EMPTY_STATE.with(areaWithCards('source', ['card']));
-        expect(stateBefore.findCard('card').faceUp).toBe(true);
-        const stateAfter = applyMessage(stateBefore, flip);
-        expect(stateAfter.findCard('card').faceUp).toBe(false);
-      });
-
-       it('should flip a card', () => {
-        const flip = new FlipMessage('card1');
-        const stateBefore = EMPTY_STATE
-                        .with(areaWithCards('source', ['card']))
-                        .with(areaWithCards('dest', ['card1']));
-        const stateAfter = applyMessage(stateBefore, flip);
-        expect(stateAfter.findCard('card1').faceUp).toBe(false);
+        expect(newArea.cards).toEqual([card2]);
       });
     });
 
@@ -67,6 +39,22 @@ describe('GameState', () => {
         expect(stateBefore.areaWithCard('card1').id).toBe('dest');
       });
     });
+
+    describe('Card flip action', () => {
+      it('throws an exception if the card is not found', () => {
+        const flip = new FlipMessage('card');
+        expect(() => applyMessage(EMPTY_STATE, flip)).toThrow(new Error('Card card not found'));
+      });
+
+       it('flips a card', () => {
+        const flip = new FlipMessage('card');
+        const stateBefore = EMPTY_STATE.with(areaWithCards('source', ['card']));
+        expect(stateBefore.findCard('card').faceUp).toBe(true);
+        const stateAfter = applyMessage(stateBefore, flip);
+        expect(stateAfter.findCard('card').faceUp).toBe(false);
+      });
+    });
+
 
     describe('Add area action', () => {
        it('should add the area', () => {
@@ -142,6 +130,5 @@ describe('GameState', () => {
         expect(moveCardTo(-4).cardsIn('dest')).toEqual(['card', '1', '2', '3']);
       });
     });
-  });
 });
 

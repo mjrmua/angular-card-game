@@ -57,9 +57,11 @@ export class Area {
     });
 
     static removeCard = R.curry(function (card: Card, area: Area): Area {
-        const index = area.cards.indexOf(card);
-        return new Area(area.id, area.name, area.style, area.parentID,
-            [...area.cards.slice(0, index), ...area.cards.slice(index + 1)]);
+        return new Area(area.id,
+                        area.name,
+                        area.style, area.parentID,
+                        area.cards.filter(v => v !== card)
+        );
     });
 
     static named(id: string) {

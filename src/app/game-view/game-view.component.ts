@@ -1,8 +1,9 @@
+import { AppliedMessage } from './../game/AppliedMessage';
 import { ShuffleMessage } from './../game/messages/ShuffleMessage';
 import { AddAreaDialogComponent } from './../add-area-dialog/add-area-dialog.component';
 import { Message } from './../game/messages/Message';
 import { Observable } from 'rxjs/Observable';
-import { MessageStoreService, MessageStore } from './../game/message-store.service';
+import { MessageService, MessageStore } from './../game/message.service';
 import { JsonPipe } from '@angular/common';
 import { MOCK_STATE, Area, Card, GameState } from './../game/gameState';
 import { GameServiceFactory, GameService } from './../game/gameService';
@@ -32,7 +33,7 @@ export class GameViewComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private dragulaService: DragulaService,
               private gameServiceFactory: GameServiceFactory,
-              private MessageStoreService: MessageStoreService,
+              private MessageService: MessageService,
               public dialog: MdDialog
             ) {
   }
@@ -53,6 +54,10 @@ export class GameViewComponent implements OnInit {
     this.messageStore.push(new ShuffleMessage(area.id));
   }
 
+  viewAtRevision(message: AppliedMessage) {
+    this.service.viewAtMesage(message.message.$key);
+  }
+
   private onDrop(args) {
     const [card, destination, source, sibling] = args;
     const cardID = card.getAttribute('data-card-id');
@@ -68,6 +73,7 @@ export class GameViewComponent implements OnInit {
     this.messageStore.push(new MoveMessage(cardID, sourceID, areaID, index));
   }
 
+
   ngOnInit() {
     this.dragulaService.drop.subscribe((value) => {
       this.onDrop(value.slice(1));
@@ -76,12 +82,12 @@ export class GameViewComponent implements OnInit {
    this.route.paramMap.first().toPromise()
    .then(map => this.id = map.get('id'))
    .then(id => {
-      this.messageStore = this.MessageStoreService.loadMessageStore(id);
+      this.messageStore = this.MessageService.loadMessageStore(id);
       return this.gameServiceFactory.load(this.id);
     })
    .then(service => {
      this.service = service;
-     this.state = service.state; })
+     this.state = service.selectedState; })
    .catch(log);
   }
 }

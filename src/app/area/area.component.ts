@@ -2,7 +2,7 @@ import { VisibleCardsPipe } from './visible-cards.pipe';
 import { style } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
 import { MdDialog, MdMenuTrigger } from '@angular/material';
-import { MessageStoreService, MessageStore } from './../game/message-store.service';
+import { MessageService, MessageStore } from './../game/message.service';
 import { GameServiceFactory } from './../game/gameService';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Area, Card, AreaStyle } from './../game/gameState';

@@ -1,5 +1,5 @@
 import { GameServiceFactory } from './game/gameService';
-import { MessageStoreService } from './game/message-store.service';
+import { MessageService } from './game/message.service';
 import { AuthGuard } from './user/auth.guard';
 import { AuthService } from './user/auth.service';
 import { CardViewComponent } from 'app/card-view/card-view.component';
@@ -40,7 +40,7 @@ import { MessageLogComponent } from './message-log/message-log.component';
 import { AddAreaDialogComponent } from './add-area-dialog/add-area-dialog.component';
 import { AreaComponent } from './area/area.component';
 import * as seedrandom from "seedrandom";
-import { MdTooltipModule } from '@angular/material';
+import { MdTooltipModule, MdSnackBarModule } from '@angular/material';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -91,14 +91,15 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     MdIconModule,
     MdMenuModule,
-    MdTooltipModule
+    MdTooltipModule,
+    MdSnackBarModule
   ],
   providers: [  AvatarService,
                 GameListService,
                 GameServiceFactory,
                 AuthService,
                 AuthGuard,
-                MessageStoreService
+                MessageService
               ],
   bootstrap: [ AppComponent ],
   entryComponents: [CardViewComponent, NewGameDialogComponent, AddAreaDialogComponent]

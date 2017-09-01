@@ -8,10 +8,11 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { MoveMessage } from './messages/MoveMessage';
-import { arrayToStream } from "../util/arrayToStream";
+import { arrayToStream } from '../util/arrayToStream';
+import * as _ from 'lodash';
 
 @Injectable()
-export class MessageStoreService {
+export class MessageService {
   constructor(private db: AngularFireDatabase) {
   }
 
@@ -45,15 +46,21 @@ function messageFromJson(json: any): Message {
 }
 
 export class MessageStore {
-  readonly messageStream: Observable<Message>;
   public dbList: FirebaseListObservable<Message[]>;
+  readonly messageStream: Observable<Message>;
+
+  private latestList: Message[];
   private lastSeenKey: string;
-  public latestMessage: Observable<Message>;
 
   constructor(private db: AngularFireDatabase, gameID: string) {
       this.dbList = this.db.list('/messageLog/' + gameID  );
+      this.latestList = [];
+      this.dbList.subscribe(v => this.latestList = v);
       this.messageStream = arrayToStream(this.dbList);
-      this.latestMessage = this.messageStream.map(v => v);
+  }
+
+  public messagesSince(messageID: string) {
+      return _.takeWhile(this.latestList, v => v.$key !== messageID);
   }
 
   public push(message: Message) {

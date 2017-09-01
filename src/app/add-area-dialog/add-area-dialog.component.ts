@@ -1,5 +1,5 @@
 import { CreateAreaMessage } from './../game/messages/CreateAreaMessage';
-import { MessageStore } from './../game/message-store.service';
+import { MessageStore } from './../game/message.service';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { Component, OnInit, Inject } from '@angular/core';
 import { AreaStyle, Area } from "../game/gameState";
