@@ -13,7 +13,8 @@
   [attr.data-card-id]="card.id"
   [attr.data-card-index]="i"
   [ngStyle]="card | cardStyle: i: area"
-  [style.background-image]="'url('+(card.faceUp?card.faceImage:card.backImage)+')'"
   (click)="fireCardClick(card)"
-  ></div>
+  >
+  <app-card [card]="card"></app-card>
+</div>
 </div>

@@ -46,6 +46,4 @@ export class CardStylePipe implements PipeTransform {
       'margin-left': transform
         };
   };
-
-
 }

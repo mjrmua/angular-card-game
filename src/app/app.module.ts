@@ -41,6 +41,7 @@ import { AddAreaDialogComponent } from './add-area-dialog/add-area-dialog.compon
 import { AreaComponent } from './area/area.component';
 import * as seedrandom from "seedrandom";
 import { MdTooltipModule, MdSnackBarModule } from '@angular/material';
+import { CardComponent } from './card/card.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -63,7 +64,8 @@ const appRoutes: Routes = [
     NewGameDialogComponent,
     MessageLogComponent,
     AddAreaDialogComponent,
-    AreaComponent
+    AreaComponent,
+    CardComponent
   ],
   imports: [
      RouterModule.forRoot(

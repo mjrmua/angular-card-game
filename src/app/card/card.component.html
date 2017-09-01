@@ -1,0 +1,14 @@
+<div class="wrapper">
+  <div class="card"
+    [ngClass]="card.faceUp?['flipped']:[]"
+  >
+    <div class="front"
+    [style.background-image]="'url('+card.faceImage+')'"
+    >
+    </div>
+    <div class="back"
+    [style.background-image]="'url('+card.backImage+')'"
+    >
+    </div>
+  </div>
+</div>

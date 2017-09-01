@@ -31,3 +31,17 @@ md-card {
     border: 3px solid Lime;
     margin: 10px;
 }
+
+.indicator{
+    width:20px;
+    height:20px;
+    margin: 5px;
+    transition: 2s;
+}
+
+.indicator.red {
+    background-color: Red;
+}
+.indicator.green {
+    background-color: Green;
+}
