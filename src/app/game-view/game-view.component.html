@@ -1,7 +1,7 @@
-  <div *ngIf="!(state | async)">
+  <div *ngIf="!state">
     Loading...
   </div>
-  <div *ngIf="(state | async)">
+  <div *ngIf="state">
     <md-tab-group>
       <md-tab *ngFor="let player of seats"> 
         <ng-template md-tab-label>
@@ -11,7 +11,7 @@
     <button md-icon-button (click)=addArea(player)>
     <md-icon>add</md-icon>
     </button>
-    <div class='wrapper' *ngFor='let area of (state | async).playerAreas(player)'>
+    <div class='wrapper' *ngFor='let area of state.playerAreas(player);trackBy:areaID'>
       <app-area [area]="area" 
       (cardClick)="openCardView($event)"
       (shuffleArea)="shuffle($event)"
@@ -22,7 +22,7 @@
       </md-tab>
   </md-tab-group>
 <div class="table">
-<div class='wrapper' *ngFor='let area of (state | async).commonAreas()'>
+<div class='wrapper' *ngFor='let area of state.commonAreas();trackBy:areaID'>
       <app-area [area]="area" (cardClick)="openCardView($event)"></app-area>
 </div>
   <h3>Messages:</h3>
@@ -31,7 +31,7 @@
   </app-message-log>
   <h3>GameState</h3>
   <code>
-  {{ state | async | json }}
+  {{ state | json }}
   </code>
   </div>
 </div>

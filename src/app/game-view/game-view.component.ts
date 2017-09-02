@@ -26,7 +26,7 @@ function log(a: any): any {
 export class GameViewComponent implements OnInit {
   id: string;
   public seats: string[] = ['Player 1', 'Player 2', 'Player 3'];
-  public state: Observable<GameState>;
+  public state: GameState;
   public service: GameService;
   private messageStore: MessageStore;
 
@@ -72,7 +72,9 @@ export class GameViewComponent implements OnInit {
 
     this.messageStore.push(new MoveMessage(cardID, sourceID, areaID, index));
   }
-
+  areaID(index: Number, area: Area) {
+    return area.id;
+  }
 
   ngOnInit() {
     this.dragulaService.drop.subscribe((value) => {
@@ -87,7 +89,8 @@ export class GameViewComponent implements OnInit {
     })
    .then(service => {
      this.service = service;
-     this.state = service.selectedState; })
+     service.selectedState.subscribe(v => this.state = v);
+     })
    .catch(log);
   }
 }

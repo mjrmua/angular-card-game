@@ -4,12 +4,4 @@
   <span>
   <button *ngIf="auth.isLoggedIn" (click)="logout()">Logout</button></span>
 </md-toolbar>
-<app-card *ngFor="let card of cards" [card]="card" (click)="onClick(card)"></app-card>
-
-<div 
-*ngFor="let card of cards" 
-class="indicator" 
-[ngClass]="card.faceUp?['red']:['green']">
-</div>
-
 <router-outlet></router-outlet>

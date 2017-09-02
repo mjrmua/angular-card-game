@@ -175,12 +175,12 @@ const RNG_STATE = seedrandom('', { state: true }).state();
 
 export const EMPTY_STATE = new GameState(RNG_STATE, []);
 
-export const MOCK_STATE = new GameState(RNG_STATE,
+export const MOCK_STATE = new GameState(null,
     [
         new Area('Horizontal', 'Horizontal', AreaStyle.Horizontal, 'Player 1',
             [
-                new Card('1', 'http://dominion.diehrstraits.com/scans/base/cellar.jpg',                         'https://c1.staticflickr.com/4/3376/3427375948_430ac7e8da.jpg', false),
-                new Card('2', 'https://upload.wikimedia.org/wikipedia/commons/f/f2/Playing_card_spade_2.svg',   'https://c1.staticflickr.com/4/3376/3427375948_430ac7e8da.jpg', true),
+                new Card('1', 'http://lasvegas.informermg.com/files/2012/09/Ace-of-Spades.jpg',                         'https://c1.staticflickr.com/4/3376/3427375948_430ac7e8da.jpg'),
+                new Card('2', 'https://upload.wikimedia.org/wikipedia/commons/f/f2/Playing_card_spade_2.svg',   'https://c1.staticflickr.com/4/3376/3427375948_430ac7e8da.jpg'),
                 new Card('3', 'https://a.fsdn.com/con/app/proj/vector-cards/screenshots/QS.png/1',              'https://c1.staticflickr.com/4/3376/3427375948_430ac7e8da.jpg'),
                 new Card('4', 'http://gwentify.com/wp-content/uploads/2017/06/113208_Aeromancy_art0-500x617.png', 'https://c1.staticflickr.com/4/3376/3427375948_430ac7e8da.jpg'),
             ]
@@ -199,6 +199,10 @@ export const MOCK_STATE = new GameState(RNG_STATE,
                 new Card('a', 'https://www.acoo.net/uploads/2016/01/Netrunner-advanced-concept-hopper-.png', 'https://vignette3.wikia.nocookie.net/ancur/images/c/c3/Corp_back.png/revision/latest?cb=20150128082205'),
                 new Card('b', 'https://www.acoo.net/uploads/2017/05/Netrunner-successful-field-test-.png', 'https://vignette3.wikia.nocookie.net/ancur/images/c/c3/Corp_back.png/revision/latest?cb=20150128082205'),
                 new Card('c', 'https://www.acoo.net/uploads/2013/05/AN-muresh-bodysuit.png', 'https://vignette3.wikia.nocookie.net/ancur/images/c/c3/Corp_back.png/revision/latest?cb=20150128082205'),
+            ]
+        ),
+        new Area('Empty', 'Empty', AreaStyle.Horizontal, null,
+            [
             ]
         )
     ]);

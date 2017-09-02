@@ -25,7 +25,7 @@ export class MessageLogComponent implements OnInit {
   messageDescription(message: Message): string {
     if (message.type === MessageType.Move) {
       const move = <MoveMessage>message;
-      return `Move ${move.cardID} from ${move.sourceID} ${move.destinationID}`;
+      return `Move ${move.cardID} from ${move.sourceID} to ${move.destinationID} index ${move.destinationIndex}`;
     }
     return 'Flip ';
   }

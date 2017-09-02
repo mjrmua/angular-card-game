@@ -9,12 +9,12 @@
 [attr.data-area-id]="area.id"
 [dragula]='"nested-bag"' 
 >
-  <div *ngFor='let card of area.cards | visibleCards: area.style; let i = index' class="card" 
-  [attr.data-card-id]="card.id"
-  [attr.data-card-index]="i"
-  [ngStyle]="card | cardStyle: i: area"
-  (click)="fireCardClick(card)"
-  >
-  <app-card [card]="card"></app-card>
-</div>
+    <div *ngFor='let card of getVisibleCards();trackBy:cardID; let i = index' class="card" 
+    [attr.data-card-id]="card.id"
+    [attr.data-card-index]="i"
+    [ngStyle]="card | cardStyle: i: area"
+    (click)="fireCardClick(card)"
+    >
+      <app-card [card]="card"></app-card>
+  </div>
 </div>

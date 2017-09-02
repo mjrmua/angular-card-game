@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="card"
-    [ngClass]="card.faceUp?['flipped']:[]"
+    [ngClass]="card.faceUp?[]:['flipped']"
   >
     <div class="front"
     [style.background-image]="'url('+card.faceImage+')'"

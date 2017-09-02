@@ -26,7 +26,6 @@ import { GameViewComponent } from './game-view/game-view.component';
 import { DragulaModule, DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { CardStylePipe } from './area/card-style.pipe';
-import { VisibleCardsPipe } from './area/visible-cards.pipe';
 import { JsonPipe, CommonModule } from '@angular/common';
 
 import {HttpClientModule} from '@angular/common/http';
@@ -60,7 +59,6 @@ const appRoutes: Routes = [
     GameListComponent,
     GameViewComponent,
     CardStylePipe,
-    VisibleCardsPipe,
     NewGameDialogComponent,
     MessageLogComponent,
     AddAreaDialogComponent,
